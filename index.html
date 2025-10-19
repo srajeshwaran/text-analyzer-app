@@ -244,18 +244,19 @@
         <!-- FOOTER SECTION -->
         <footer class="mt-16 pt-8 border-t border-gray-200">
             <div class="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-gray-600 mb-4 font-medium">
+                <!-- Buttons open Modals -->
                 <button id="btn-open-privacy" class="hover:text-blue-600 transition duration-150 focus:outline-none">Privacy Policy (CRITICAL)</button>
-                <a href="#terms-of-service" class="hover:text-blue-600 transition duration-150">Terms of Service</a>
-                <a href="#contact-us" class="hover:text-blue-600 transition duration-150">Contact / About Us</a>
+                <button id="btn-open-terms" class="hover:text-blue-600 transition duration-150 focus:outline-none">Terms of Service</button>
+                <button id="btn-open-contact" class="hover:text-blue-600 transition duration-150 focus:outline-none">Contact / About Us</button>
             </div>
             <p class="text-center text-gray-500 text-sm">&copy; <span id="currentYear"></span> Text Transformer. Built for high utility and fast performance.</p>
         </footer>
         <!-- END FOOTER -->
     </div>
 
-    <!-- PRIVACY POLICY MODAL (NEW BLOCK) -->
+    <!-- PRIVACY POLICY MODAL -->
     <!-- This modal is hidden by default and triggered by the footer link -->
-    <div id="privacy-modal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden transition-opacity duration-300">
+    <div id="privacy-modal" class="policy-modal fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden transition-opacity duration-300">
         <div class="flex items-center justify-center min-h-screen p-4">
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative">
                 
@@ -304,7 +305,7 @@
                 </div>
                 
                 <!-- Close Button for Modal -->
-                <button id="btn-close-privacy" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-150">
+                <button id="btn-close-privacy" class="policy-close-btn absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-150">
                     <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
 
@@ -312,6 +313,77 @@
         </div>
     </div>
     <!-- END PRIVACY POLICY MODAL -->
+
+
+    <!-- TERMS OF SERVICE MODAL (NEW) -->
+    <div id="terms-modal" class="policy-modal fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative">
+                
+                <h1 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Terms of Service</h1>
+                <p class="text-sm text-gray-500 mb-6">**Last Updated: October 20, 2024**</p>
+
+                <div class="space-y-6 text-gray-700 text-md leading-relaxed">
+                    <p>Welcome to the Text Transformer & Analyzer. By accessing or using our Service, you agree to be bound by these Terms of Service ("Terms").</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">1. Use of the Service</h2>
+                    <p>The Service is provided to you free of charge for your personal and commercial use to analyze and convert text. You may use the results of the Service for any lawful purpose.</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>**Acceptable Use:** You agree not to use the Service for any illegal, unauthorized, or prohibited activities.</li>
+                        <li>**No Guaranteed Uptime:** The Service is provided "as is" and "as available." We do not guarantee uninterrupted availability and reserve the right to modify or discontinue the Service at any time without notice.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">2. User Content</h2>
+                    <p>The text you input into the Service ("User Content") is processed entirely on your local machine and **is not transmitted or stored by us.** Therefore, we make no claim of ownership over your User Content.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">3. Intellectual Property</h2>
+                    <p>The Service, including its design, code, graphics, and features, are the exclusive property of the Service provider. These Terms do not grant you any right to use the trademarks, logos, or domain names of the Service.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">4. Disclaimer of Warranties</h2>
+                    <p>THE SERVICE IS PROVIDED WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR COURSE OF PERFORMANCE.</p>
+                </div>
+                
+                <!-- Close Button for Modal -->
+                <button id="btn-close-terms" class="policy-close-btn absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-150">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <!-- END TERMS OF SERVICE MODAL -->
+
+    <!-- CONTACT / ABOUT US MODAL (NEW) -->
+    <div id="contact-modal" class="policy-modal fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative">
+                
+                <h1 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Contact / About Us</h1>
+                <p class="text-sm text-gray-500 mb-6">Learn more about the tool and how to reach us.</p>
+
+                <div class="space-y-6 text-gray-700 text-md leading-relaxed">
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">Our Mission</h2>
+                    <p>The Text Transformer & Analyzer was created to provide a simple, fast, and completely free utility for anyone needing to count words, check statistics, or change text case without hassle. Our core philosophy is privacy-first: all text processing happens instantly in your browser.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">Need to Get In Touch?</h2>
+                    <p>We welcome feedback, suggestions for new features, or reports of bugs. Please note that due to the volume of inquiries, we may not be able to respond to every message, but we read them all.</p>
+
+                    <h3 class="text-xl font-semibold mt-4">Contact Information</h3>
+                    <p class="text-lg font-mono p-3 bg-blue-50 border border-blue-200 rounded-lg inline-block mt-2">
+                        srajeshwaran1113@gmail.com
+                    </p>
+                    <p class="text-sm text-gray-500 mt-2">Please use this email for all business and support inquiries.</p>
+                </div>
+                
+                <!-- Close Button for Modal -->
+                <button id="btn-close-contact" class="policy-close-btn absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-150">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <!-- END CONTACT / ABOUT US MODAL -->
 
 
     <script>
@@ -341,6 +413,15 @@
         const privacyModal = document.getElementById('privacy-modal');
         const btnOpenPrivacy = document.getElementById('btn-open-privacy');
         const btnClosePrivacy = document.getElementById('btn-close-privacy');
+        
+        // NEW Modal Elements
+        const termsModal = document.getElementById('terms-modal');
+        const btnOpenTerms = document.getElementById('btn-open-terms');
+        const btnCloseTerms = document.getElementById('btn-close-terms');
+        
+        const contactModal = document.getElementById('contact-modal');
+        const btnOpenContact = document.getElementById('btn-open-contact');
+        const btnCloseContact = document.getElementById('btn-close-contact');
 
 
         // Common English Stop Words (can be expanded)
@@ -574,6 +655,17 @@
             }
         }
 
+        // --- Modal Control Functions ---
+
+        function openModal(modalElement) {
+            modalElement.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal(modalElement) {
+            modalElement.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
 
         // --- Event Handlers ---
         
@@ -651,24 +743,25 @@
         btnClearPanel.addEventListener('click', handleClearInput);
         btnClearInline.addEventListener('click', handleClearInput);
 
-        // Modal Handlers
-        btnOpenPrivacy.addEventListener('click', (e) => {
-            e.preventDefault(); // Stop the default anchor jump
-            privacyModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        });
-
-        btnClosePrivacy.addEventListener('click', () => {
-            privacyModal.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore scrolling
-        });
+        // --- Modal Event Handlers ---
         
-        // Close modal on outside click
-        privacyModal.addEventListener('click', (e) => {
-            if (e.target === privacyModal) {
-                privacyModal.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
+        // Open Modal Handlers
+        btnOpenPrivacy.addEventListener('click', (e) => { e.preventDefault(); openModal(privacyModal); });
+        btnOpenTerms.addEventListener('click', (e) => { e.preventDefault(); openModal(termsModal); });
+        btnOpenContact.addEventListener('click', (e) => { e.preventDefault(); openModal(contactModal); });
+
+        // Close Modal Handlers (X buttons)
+        btnClosePrivacy.addEventListener('click', () => { closeModal(privacyModal); });
+        btnCloseTerms.addEventListener('click', () => { closeModal(termsModal); });
+        btnCloseContact.addEventListener('click', () => { closeModal(contactModal); });
+        
+        // Close Modal on outside click
+        document.querySelectorAll('.policy-modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal(modal);
+                }
+            });
         });
 
 
