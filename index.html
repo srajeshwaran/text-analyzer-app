@@ -1,180 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Case Converter & Counter</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Case Converter & Counter</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="favicon.png">
 
-    <!-- Local Tailwind CSS -->
-    <link rel="stylesheet" href="css/output.css">
+<!-- Local Tailwind CSS -->
+<link rel="stylesheet" href="css/output.css">
 
-    <style>
-        :root {
-            --primary-color: #6366f1; /* Indigo-500 */
-            --primary-dark: #4f46e5; /* Indigo-600 */
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .container-card {
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
-        }
-        .container-card:hover { transform: translateY(-2px); }
-        .btn {
-            background-color: var(--primary-color);
-            transition: background-color 0.2s, transform 0.1s;
-        }
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-        .btn:active { transform: translateY(0); }
+<style>
+:root {
+    --primary-color: #6366f1;
+    --primary-dark: #4f46e5;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+}
+.container-card {
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2 rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+.container-card:hover { transform: translateY(-2px); }
+.btn {
+    background-color: var(--primary-color);
+    transition: background-color 0.2s, transform 0.1s;
+}
+.btn:hover { background-color: var(--primary-dark); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+textarea::-webkit-scrollbar { width: 8px; }
+textarea::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 4px; }
+</style>
 
-        textarea::-webkit-scrollbar { width: 8px; }
-        textarea::-webkit-scrollbar-thumb {
-            background-color: #d1d5db;
-            border-radius: 4px;
-        }
-    </style>
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KQ55MVC80X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KQ55MVC80X');
 
-    <!-- Google Analytics GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQ55MVC80X"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KQ55MVC80X');
-
-      function trackConversion(action, label) {
-          gtag('event', action, {
-              'event_category': 'Case Conversion',
-              'event_label': label
-          });
-      }
-    </script>
+  function trackConversion(action,label){
+    gtag('event',action,{event_category:'Case Conversion',event_label:label});
+  }
+</script>
 </head>
 <body class="p-4 md:p-8 flex items-start justify-center min-h-screen">
 
-    <div class="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl container-card">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">
-                Text Case Converter & Analyzer
-            </h1>
-            <p class="text-gray-500 mt-2">Instantly change case, count words, characters, and sentences.</p>
-        </header>
+<div class="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl container-card">
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">Text Case Converter & Analyzer</h1>
+        <p class="text-gray-500 mt-2">Instantly change case, count words, characters, and sentences.</p>
+    </header>
 
-        <div class="mb-6">
-            <textarea id="textInput" class="w-full h-48 p-4 text-gray-700 border-2 border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out resize-none"
-                placeholder="Paste or type your text here to get started..." oninput="updateCounts()" spellcheck="false"></textarea>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-            <button onclick="changeCase('upper')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">UPPER CASE</button>
-            <button onclick="changeCase('lower')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">lower case</button>
-            <button onclick="changeCase('title')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Title Case</button>
-            <button onclick="changeCase('sentence')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Sentence case</button>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <button onclick="changeCase('inverse')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-purple-500 hover:bg-purple-600">InVeRsE cAsE</button>
-            <button onclick="changeCase('kebab')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-pink-500 hover:bg-pink-600">kebab-case</button>
-            <div class="hidden sm:block"></div>
-            <div class="hidden sm:block"></div>
-        </div>
-
-        <div class="flex justify-between items-center mb-8 border-t pt-4">
-            <button id="copyButton" onclick="copyText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center text-sm">
-                Copy Text
-            </button>
-            <button onclick="clearText()" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center text-sm">
-                Clear All
-            </button>
-        </div>
-
-        <h2 class="text-xl font-bold text-gray-700 mb-4">Analysis & Counts</h2>
-        <div id="countsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    <div class="mb-6">
+        <textarea id="textInput" class="w-full h-48 p-4 text-gray-700 border-2 border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out resize-none" placeholder="Paste or type your text here..." oninput="updateCounts()" spellcheck="false"></textarea>
     </div>
 
-    <script>
-        const inputElement = document.getElementById('textInput');
-        const countsGrid = document.getElementById('countsGrid');
-        const copyButton = document.getElementById('copyButton');
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
+        <button onclick="changeCase('upper')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">UPPER CASE</button>
+        <button onclick="changeCase('lower')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">lower case</button>
+        <button onclick="changeCase('title')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Title Case</button>
+        <button onclick="changeCase('sentence')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Sentence case</button>
+    </div>
 
-        document.addEventListener('DOMContentLoaded', updateCounts);
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <button onclick="changeCase('inverse')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-purple-500 hover:bg-purple-600">InVeRsE cAsE</button>
+        <button onclick="changeCase('kebab')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-pink-500 hover:bg-pink-600">kebab-case</button>
+        <div class="hidden sm:block"></div>
+        <div class="hidden sm:block"></div>
+    </div>
 
-        function updateCounts() {
-            const text = inputElement.value;
-            const characterCount = text.length;
-            const words = text.match(/\b\w+\b/g);
-            const wordCount = words ? words.length : 0;
-            const sentenceCount = text.split(/[\.!\?]+/).filter(s => s.trim().length > 0).length;
-            const paragraphCount = text.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+    <div class="flex justify-between items-center mb-8 border-t pt-4">
+        <button id="copyButton" onclick="copyText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center text-sm">Copy Text</button>
+        <button onclick="clearText()" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg font-semibold flex items-center text-sm">Clear All</button>
+    </div>
 
-            renderCounts(characterCount, wordCount, sentenceCount, paragraphCount);
+    <h2 class="text-xl font-bold text-gray-700 mb-4">Analysis & Counts</h2>
+    <div id="countsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+</div>
 
-            copyButton.disabled = text.length === 0;
-            if (text.length === 0) copyButton.classList.add('opacity-50', 'cursor-not-allowed');
-            else copyButton.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-
-        function renderCounts(chars, words, sentences, paragraphs) {
-            const metrics = [
-                { label: 'Characters', count: chars },
-                { label: 'Words', count: words },
-                { label: 'Sentences', count: sentences },
-                { label: 'Paragraphs', count: paragraphs },
-            ];
-
-            countsGrid.innerHTML = metrics.map(m => `
-                <div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400">
-                    <p class="text-3xl font-bold text-gray-800">${m.count}</p>
-                    <p class="text-gray-500 text-sm mt-1">${m.label}</p>
-                </div>
-            `).join('');
-        }
-
-        function changeCase(type) {
-            let text = inputElement.value;
-            let result = text;
-
-            switch (type) {
-                case 'upper': result = text.toUpperCase(); break;
-                case 'lower': result = text.toLowerCase(); break;
-                case 'title': result = text.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '); break;
-                case 'sentence': result = text.toLowerCase().replace(/(^\s*\w|[.?!]\s*\w)/g, c => c.toUpperCase()); break;
-                case 'inverse': result = text.toLowerCase().split('').map((c,i) => /[a-z]/.test(c) ? (i%2===0 ? c.toUpperCase() : c) : c).join(''); break;
-                case 'kebab': result = text.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').trim(); break;
-                default: return;
-            }
-
-            inputElement.value = result;
-            updateCounts();
-            if (typeof gtag === 'function') trackConversion('case_conversion', type + '_case');
-        }
-
-        function copyText() {
-            const textToCopy = inputElement.value;
-            if (!textToCopy) return;
-
-            inputElement.select();
-            document.execCommand('copy');
-
-            copyButton.textContent = 'Copied!';
-            setTimeout(() => copyButton.textContent = 'Copy Text', 1500);
-
-            if (typeof gtag === 'function') gtag('event','copy_action',{event_category:'Utility', event_label:'Text Copied'});
-        }
-
-        function clearText() {
-            inputElement.value = '';
-            updateCounts();
-            if (typeof gtag === 'function') gtag('event','clear_action',{event_category:'Utility', event_label:'Text Cleared'});
-        }
-    </script>
+<script>
+const inputElement=document.getElementById('textInput');
+const countsGrid=document.getElementById('countsGrid');
+const copyButton=document.getElementById('copyButton');
+document.addEventListener('DOMContentLoaded',updateCounts);
+function updateCounts(){
+    const text=inputElement.value;
+    const characterCount=text.length;
+    const words=text.match(/\b\w+\b/g);
+    const wordCount=words?words.length:0;
+    const sentenceCount=text.split(/[\.!\?]+/).filter(s=>s.trim().length>0).length;
+    const paragraphCount=text.split(/\n\s*\n/).filter(p=>p.trim().length>0).length;
+    renderCounts(characterCount,wordCount,sentenceCount,paragraphCount);
+    copyButton.disabled=text.length===0;
+    if(text.length===0) copyButton.classList.add('opacity-50','cursor-not-allowed');
+    else copyButton.classList.remove('opacity-50','cursor-not-allowed');
+}
+function renderCounts(chars,words,sentences,paragraphs){
+    const metrics=[
+        {label:'Characters',count:chars},
+        {label:'Words',count:words},
+        {label:'Sentences',count:sentences},
+        {label:'Paragraphs',count:paragraphs},
+    ];
+    countsGrid.innerHTML=metrics.map(m=>`<div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400"><p class="text-3xl font-bold text-gray-800">${m.count}</p><p class="text-gray-500 text-sm mt-1">${m.label}</p></div>`).join('');
+}
+function changeCase(type){
+    let text=inputElement.value;
+    let result=text;
+    switch(type){
+        case'upper':result=text.toUpperCase();break;
+        case'lower':result=text.toLowerCase();break;
+        case'title':result=text.toLowerCase().split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');break;
+        case'sentence':result=text.toLowerCase().replace(/(^\s*\w|[.?!]\s*\w)/g,c=>c.toUpperCase());break;
+        case'inverse':result=text.toLowerCase().split('').map((c,i)=>/[a-z]/.test(c)?(i%2===0?c:c.toLowerCase()):c).join('');break;
+        case'kebab':result=text.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').trim();break;
+        default:return;
+    }
+    inputElement.value=result;
+    updateCounts();
+    if(typeof gtag==='function') trackConversion('case_conversion',type+'_case');
+}
+function copyText(){
+    const textToCopy=inputElement.value;
+    if(!textToCopy)return;
+    inputElement.select();
+    document.execCommand('copy');
+    copyButton.textContent='Copied!';
+    setTimeout(()=>copyButton.textContent='Copy Text',1500);
+    if(typeof gtag==='function') gtag('event','copy_action',{event_category:'Utility',event_label:'Text Copied'});
+}
+function clearText(){
+    inputElement.value='';
+    updateCounts();
+    if(typeof gtag==='function') gtag('event','clear_action',{event_category:'Utility',event_label:'Text Cleared'});
+}
+</script>
 </body>
 </html>
