@@ -3,41 +3,90 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SmartToolsHub - Free Online Tools</title>
-
+  <title>Text Analyzer & Transformer - Free Online Tool</title>
+  <meta name="description" content="Analyze text, count words, characters, lines, and transform text online. Free and easy to use.">
+  <meta name="keywords" content="text analyzer, word count, character count, online tool, text transformer, text utility">
+  <meta name="author" content="Rajeshwaran">
+  
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="favicon.png">
 
-  <!-- Google Analytics GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQ55MVC80X"></script>
+  <!-- TailwindCSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX'); // Replace with your GA4 ID
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center p-4">
 
-    gtag('config', 'G-KQ55MVC80X');
+  <h1 class="text-3xl font-bold text-center my-6">Text Analyzer & Transformer</h1>
+
+  <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-md">
+    <textarea id="textInput" rows="8" class="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Paste or type your text here..."></textarea>
+    
+    <div class="flex flex-wrap gap-2 mb-4">
+      <button onclick="toUpper()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">UPPERCASE</button>
+      <button onclick="toLower()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">lowercase</button>
+      <button onclick="removeExtraSpaces()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Remove Spaces</button>
+      <button onclick="copyText()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">Copy Text</button>
+      <button onclick="clearText()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Clear</button>
+    </div>
+
+    <div class="bg-gray-100 p-4 rounded">
+      <h2 class="font-semibold mb-2">Text Summary:</h2>
+      <p id="wordCount">Words: 0</p>
+      <p id="charCount">Characters: 0</p>
+      <p id="lineCount">Lines: 0</p>
+    </div>
+  </div>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const wordCount = document.getElementById('wordCount');
+    const charCount = document.getElementById('charCount');
+    const lineCount = document.getElementById('lineCount');
+
+    function updateCounts() {
+      const text = textInput.value;
+      wordCount.textContent = "Words: " + (text.trim() === "" ? 0 : text.trim().split(/\s+/).length);
+      charCount.textContent = "Characters: " + text.length;
+      lineCount.textContent = "Lines: " + (text === "" ? 0 : text.split(/\n/).length);
+    }
+
+    function toUpper() {
+      textInput.value = textInput.value.toUpperCase();
+      updateCounts();
+    }
+
+    function toLower() {
+      textInput.value = textInput.value.toLowerCase();
+      updateCounts();
+    }
+
+    function removeExtraSpaces() {
+      textInput.value = textInput.value.replace(/\s+/g, ' ').trim();
+      updateCounts();
+    }
+
+    function copyText() {
+      navigator.clipboard.writeText(textInput.value);
+      alert("Text copied to clipboard!");
+    }
+
+    function clearText() {
+      textInput.value = "";
+      updateCounts();
+    }
+
+    textInput.addEventListener('input', updateCounts);
+    updateCounts();
   </script>
 
-  <!-- Meta Tags -->
-  <meta name="description" content="SmartToolsHub - Free Online Tools for PDF, Word, Excel, Images, and more.">
-  <meta name="keywords" content="online tools, free tools, PDF to Word, image converter, text analyzer">
-  <meta name="author" content="Rajeshwaran Subramaniam">
-
-  <!-- CSS (example) -->
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Welcome to SmartToolsHub</h1>
-    <p>Free Online Tools for Everyone!</p>
-  </header>
-
-  <main>
-    <!-- Your tools sections go here -->
-  </main>
-
-  <footer>
-    <p>&copy; 2025 SmartToolsHub. All rights reserved.</p>
-  </footer>
 </body>
 </html>
