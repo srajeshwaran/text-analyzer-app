@@ -57,6 +57,10 @@
     <!-- Essential SEO Meta Tags for discoverability -->
     <meta name="description" content="Use the free online tool to instantly convert text to UPPERCASE, lowercase, Sentence Case, Title Case, and get real-time statistics on word count, character count, and line count for essays or reports.">
     <meta name="keywords" content="text converter, case converter, word counter, character counter, unique word count, uppercase to lowercase, title case online, sentence case tool, free online utility, reverse text, remove extra spaces">
+    <!-- Main AdSense Loader Script: This must remain in the head. -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456"
+         crossorigin="anonymous"></script>
+    <!-- REMOVED: The redundant (adsbygoogle || []).push({}); from the head to avoid ReferenceError. -->
 </head>
 <body class="min-h-screen p-4 md:p-8">
 
@@ -205,13 +209,9 @@
                              data-ad-format="auto"
                              data-full-width-responsive="true"></ins>
                         
-                        <!-- The AdSense script must also be included, once in the <head> or near the ad unit. -->
-                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1234567890123456"
-                             crossorigin="anonymous"></script>
-                        
-                        <!-- This script pushes the ad for display. -->
+                        <!-- FIX: Added the ad push script here, immediately after the ins tag, which is the correct AdSense implementation to ensure 'adsbygoogle' is ready when called. -->
                         <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
+                            (adsbygoogle = window.adsbygoogle || []).push({});
                         </script>
                     </div>
                     <!-- END OF AD NETWORK CODE -->
@@ -241,20 +241,78 @@
             </div>
         </div>
 
-        <!-- UPDATED FOOTER FOR ADSFENSE COMPLIANCE -->
+        <!-- FOOTER SECTION -->
         <footer class="mt-16 pt-8 border-t border-gray-200">
-            <!-- New Links Section for Compliance -->
             <div class="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-6 text-sm text-gray-600 mb-4 font-medium">
-                <!-- IMPORTANT: Create these pages or anchor links -->
-                <a href="#privacy-policy" class="hover:text-blue-600 transition duration-150">Privacy Policy (CRITICAL)</a>
+                <button id="btn-open-privacy" class="hover:text-blue-600 transition duration-150 focus:outline-none">Privacy Policy (CRITICAL)</button>
                 <a href="#terms-of-service" class="hover:text-blue-600 transition duration-150">Terms of Service</a>
                 <a href="#contact-us" class="hover:text-blue-600 transition duration-150">Contact / About Us</a>
             </div>
             <p class="text-center text-gray-500 text-sm">&copy; <span id="currentYear"></span> Text Transformer. Built for high utility and fast performance.</p>
         </footer>
-        <!-- END OF UPDATED FOOTER -->
-
+        <!-- END FOOTER -->
     </div>
+
+    <!-- PRIVACY POLICY MODAL (NEW BLOCK) -->
+    <!-- This modal is hidden by default and triggered by the footer link -->
+    <div id="privacy-modal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-75 hidden transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-8 relative">
+                
+                <h1 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Privacy Policy for Text Transformer & Analyzer</h1>
+                <p class="text-sm text-gray-500 mb-6">**Last Updated: October 20, 2024**</p>
+
+                <div class="space-y-6 text-gray-700 text-md leading-relaxed">
+                    
+                    <p>The Text Transformer & Analyzer (the "Service") is committed to protecting the privacy of its users. This policy outlines how we handle information when you use our website.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">1. Information We DO NOT Collect</h2>
+                    <p>We do not require users to register, log in, or provide any personal identifiable information (PII) to use the core functionality of the Service.</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>**No User Accounts:** We do not collect names, email addresses, physical addresses, or any other personal data that can directly identify you.</li>
+                        <li>**No Text Storage:** The text you paste or type into the analysis box is processed instantly within your web browser. This text **is not** stored on our servers, nor is it transmitted to us for analysis or storage. Once you close the browser tab, the text is gone from our Service.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">2. Information We Automatically Collect (Non-Personal Data)</h2>
+                    <p>Like most websites, we utilize standard third-party tools that collect non-personal data to help us understand how the site is used, diagnose problems, and serve advertisements.</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>**Usage Data:** We collect general, anonymous data about your visit, such as the pages you view, the type of browser you use, and the duration of your visit, solely for traffic analysis and site improvement.</li>
+                        <li>**Cookies:** We use cookies to manage and maintain the functionality of the website (e.g., remembering a setting). Third-party providers, such as those listed below, also use cookies for advertising and analytics purposes.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">3. Third-Party Services (Advertising and Analytics)</h2>
+                    <p>The Service relies on third parties for essential functions. By using this website, you acknowledge and agree to the privacy practices of the following providers:</p>
+
+                    <h3 class="text-xl font-semibold mt-4">Google AdSense</h3>
+                    <p>This Service uses **Google AdSense** to display advertisements. AdSense uses the **DoubleClick DART cookie** to serve ads based on a user's prior visits to this website and other websites on the internet.</p>
+                    <ul class="list-disc list-inside space-y-2 ml-4">
+                        <li>Google’s use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our sites and/or other sites on the Internet.</li>
+                        <li>You may opt out of the use of the DART cookie by visiting the <a href="https://policies.google.com/technologies/ads" target="_blank" class="text-blue-600 hover:underline font-medium">Google Ad and Content Network Privacy Policy</a>.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mt-4">Google Analytics</h3>
+                    <p>We use **Google Analytics** to track and analyze website traffic. Google Analytics uses cookies to collect information on your use of the site, which is aggregated to provide reports on website activity.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">4. Links to Other Sites</h2>
+                    <p>Our website may contain links to other sites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.</p>
+
+                    <h2 class="text-2xl font-semibold mt-6 mb-2">5. Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy or the practices of this site, please contact us at:</p>
+                    <p class="text-lg font-mono p-3 bg-blue-50 border border-blue-200 rounded-lg inline-block mt-2">
+                        support@yourwebsitename.com **(ACTION: Replace this with your actual email)**
+                    </p>
+                </div>
+                
+                <!-- Close Button for Modal -->
+                <button id="btn-close-privacy" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition duration-150">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+            </div>
+        </div>
+    </div>
+    <!-- END PRIVACY POLICY MODAL -->
+
 
     <script>
         const inputArea = document.getElementById('textInput');
@@ -279,6 +337,12 @@
         const analysisResults = document.getElementById('word-analysis-results');
         const analysisPlaceholder = document.getElementById('analysis-placeholder');
 
+        // Modal Elements
+        const privacyModal = document.getElementById('privacy-modal');
+        const btnOpenPrivacy = document.getElementById('btn-open-privacy');
+        const btnClosePrivacy = document.getElementById('btn-close-privacy');
+
+
         // Common English Stop Words (can be expanded)
         const STOP_WORDS = new Set([
             'a', 'an', 'and', 'the', 'is', 'am', 'are', 'was', 'were', 'be', 'of', 'to', 'in', 'on', 'at', 
@@ -288,7 +352,7 @@
             'has', 'had', 'do', 'does', 'did', 'if', 'when', 'where', 'why', 'how', 'which', 'who', 'whom', 
             'then', 'than', 'only', 'such', 'all', 'any', 'most', 'some', 'one', 'two', 'three', 'four', 
             'five', 'six', 'seven', 'eight', 'nine', 'ten', 'more', 'less', 'very', 'too', 'also', 'much', 
-            'many', 'etc', 'etc.' // Added 'etc' variants for robustness
+            'many', 'etc', 'etc.' 
         ]);
 
         // --- Core Text Utility Functions ---
@@ -586,6 +650,27 @@
         // Clear Text functions (both panel button and inline button use the same logic)
         btnClearPanel.addEventListener('click', handleClearInput);
         btnClearInline.addEventListener('click', handleClearInput);
+
+        // Modal Handlers
+        btnOpenPrivacy.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop the default anchor jump
+            privacyModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+
+        btnClosePrivacy.addEventListener('click', () => {
+            privacyModal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        });
+        
+        // Close modal on outside click
+        privacyModal.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+
 
         // Initial call to set stats to zero and year in footer
         document.addEventListener('DOMContentLoaded', () => {
