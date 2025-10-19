@@ -178,16 +178,35 @@
                     </div>
                 </div>
 
-                <!-- 5. Ad Placeholder for Monetization -->
+                <!-- 5. AdSense Code for Monetization -->
                 <div class="mt-8 pt-4 border-t border-gray-200">
                     <p class="text-sm font-semibold text-gray-500 mb-2 uppercase tracking-wider">Monetization</p>
-                    <!-- 
-                        *** IMPORTANT: AD PLACEMENT AREA ***
-                        Replace the entire 'ad-unit-placeholder' div below with your actual AdSense or ad network code (e.g., a responsive unit).
-                    -->
-                    <div class="h-64 bg-gray-100 flex items-center justify-center rounded-xl text-gray-500 text-sm italic border border-gray-200" id="ad-unit-placeholder">
-                        Your Ad Network Code Goes Here (e.g., AdSense)
+                    
+                    <!-- START OF AD NETWORK CODE -->
+                    <div class="mx-auto my-4 text-center">
+                        <!-- 
+                            *** IMPORTANT: REPLACE THESE VALUES ***
+                            Replace 'ca-pub-XXXXXXXXXXXXXXXX' with your AdSense data-ad-client ID 
+                            and 'XXXXXXXXXX' with your data-ad-slot ID.
+                        -->
+                        <ins class="adsbygoogle"
+                             style="display:block; width: 100%; height: 300px;" 
+                             data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" 
+                             data-ad-slot="XXXXXXXXXX"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        
+                        <!-- The AdSense script must also be included, usually once in the <head> but fine here for this single-file app. -->
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+                             crossorigin="anonymous"></script>
+                        
+                        <!-- This script pushes the ad for display. -->
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
+                    <!-- END OF AD NETWORK CODE -->
+
                 </div>
 
             </div>
