@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="sitemap-style.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Page -->
   <url>
     <loc>https://srajeshwaran.github.io/text-analyzer-app/</loc>
-    <lastmod>2025-10-20</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+
+  <!-- Example subpages (add these if you have them) -->
+  <url>
+    <loc>https://srajeshwaran.github.io/text-analyzer-app/about.html</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://srajeshwaran.github.io/text-analyzer-app/contact.html</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>
