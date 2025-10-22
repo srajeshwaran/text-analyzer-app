@@ -376,7 +376,7 @@
                 const mimeType = file.type;
 
                 const userPrompt = "Identify all readable text from this image and output it as raw, continuous text. Do not add any commentary, explanations, or formatting.";
-                const apiKey = "" 
+                const apiKey = "" // IMPORTANT: When deploying this code publicly, you MUST replace "" with your actual Gemini API key.
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
                 const payload = {
@@ -404,10 +404,13 @@
                 
                 const result = await response.json();
                 
-                const extractedText = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: Could not extract text. Please try another image.';
+                // Enhanced error message to help the user identify the API key issue on their published site
+                const extractedText = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Extraction failed. This may be due to poor image quality or a missing/invalid API key (if deployed on a public site). Please try another image or check your browser console for details.';
                 
                 outputText.value = extractedText;
-                if (extractedText.startsWith('Error:')) {
+                if (extractedText.includes('API key (if deployed')) {
+                    copyBtn.classList.add('hidden');
+                } else if (extractedText.startsWith('Error:')) {
                     copyBtn.classList.add('hidden');
                 } else {
                     copyBtn.classList.remove('hidden');
@@ -415,7 +418,8 @@
 
             } catch (error) {
                 console.error('Image processing failed:', error);
-                outputText.value = `An error occurred during text extraction: ${error.message}`;
+                // Enhanced message for network/fetch failures
+                outputText.value = `A network error occurred. If you are using this on a published website, ensure your Gemini API key has been added to the 'const apiKey' variable in the code. Detailed error: ${error.message}`;
             } finally {
                 loadingIndicator.classList.add('hidden');
             }
