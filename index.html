@@ -94,9 +94,10 @@
 
     <div class="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl container-card">
         
-        <!-- ✅ Navigation Tabs (Only Text Converter remains here) -->
+        <!-- ✅ Navigation Tabs -->
         <div class="flex flex-wrap overflow-x-auto border-b border-gray-200 mb-6 -mt-6 -mx-6 md:-mx-10 px-6 md:px-10 pt-6 bg-gray-50 rounded-t-xl">
             <button id="tab-converterView" class="tab-button active" onclick="switchView('converterView')">Text Converter</button>
+            <button id="tab-imageToTextView" class="tab-button" onclick="switchView('imageToTextView')">Image to Text Converter</button>
             <!-- All other links moved to the footer -->
         </div>
 
@@ -128,6 +129,27 @@
 
             <h2 class="text-xl font-bold text-gray-700 mb-4">Analysis & Counts</h2>
             <div id="countsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
+
+        <!-- ✅ Image to Text Converter View -->
+        <div id="imageToTextView" class="hidden py-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Image to Text Converter (OCR)</h2>
+            <p class="text-gray-600 mb-6">Upload an image containing text (e.g., a screenshot, document, or sign) to extract the readable content using AI.</p>
+            
+            <input type="file" id="imageInput" accept="image/*" class="w-full mb-4 p-3 border-2 border-indigo-200 rounded-lg text-gray-700 focus:ring-indigo-500 focus:border-indigo-500" onchange="previewImage(event)">
+
+            <div id="imagePreviewContainer" class="mb-6 hidden">
+                <img id="imagePreview" class="max-h-64 w-auto mx-auto rounded-lg shadow-md mb-4" alt="Image Preview">
+                <button onclick="processImage()" class="btn w-full text-white py-3 px-4 rounded-lg font-semibold text-base">Extract Text</button>
+            </div>
+            
+            <div id="extractionResult" class="mt-6">
+                <p id="loadingIndicator" class="hidden text-center text-indigo-600 font-semibold py-4">
+                    Processing image, please wait...
+                </p>
+                <textarea id="outputText" class="w-full h-48 p-4 text-gray-700 border-2 border-gray-200 rounded-lg resize-none" placeholder="Extracted text will appear here..." readonly></textarea>
+                <button id="copyExtractedTextButton" onclick="copyExtractedText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-sm mt-3 hidden">Copy Extracted Text</button>
+            </div>
         </div>
 
         <!-- ✅ About -->
@@ -189,7 +211,7 @@
         const countsGrid = document.getElementById('countsGrid');
         const copyButton = document.getElementById('copyButton');
         // Views array includes all sections for tab switching
-        const views = ['converterView', 'aboutView', 'contactView', 'policyView', 'termsView'];
+        const views = ['converterView', 'imageToTextView', 'aboutView', 'contactView', 'policyView', 'termsView'];
 
         function switchView(viewId) {
             views.forEach(id => {
@@ -200,8 +222,22 @@
                 // Toggle visibility of the content view
                 if (viewElement) viewElement.classList.toggle('hidden', id !== viewId);
                 
-                // Only "Text Converter" is a visible tab, so we only manage its 'active' state
-                if (tabElement) tabElement.classList.toggle('active', id === viewId);
+                // Only "Text Converter" and "ImageToTextView" have tabs, we manage their 'active' state
+                if (tabElement) {
+                    tabElement.classList.toggle('active', id === viewId);
+                } else if (id === 'converterView' || id === 'imageToTextView') {
+                    // This handles non-tab views (like About/Contact) by ensuring all tabs are inactive
+                    const converterTab = document.getElementById('tab-converterView');
+                    const imageToTextTab = document.getElementById('tab-imageToTextView');
+                    if (converterTab) converterTab.classList.remove('active');
+                    if (imageToTextTab) imageToTextTab.classList.remove('active');
+                }
+
+                // Re-activate the correct tab if it exists
+                const newActiveTab = document.getElementById(`tab-${viewId}`);
+                if (newActiveTab) {
+                    newActiveTab.classList.add('active');
+                }
             });
             gtag('event', 'page_view', { 'page_title': viewId });
         }
@@ -261,6 +297,138 @@
             inputElement.value = '';
             updateCounts();
             gtag('event', 'clear_action');
+        }
+
+        // --- Image to Text Conversion Functions ---
+
+        // Utility for base64 encoding
+        function base64EncodeImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+                    const base64String = reader.result.split(',')[1];
+                    resolve(base64String);
+                };
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const preview = document.getElementById('imagePreview');
+            document.getElementById('outputText').value = '';
+            document.getElementById('copyExtractedTextButton').classList.add('hidden');
+            
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                previewContainer.classList.remove('hidden');
+            } else {
+                previewContainer.classList.add('hidden');
+                preview.src = '';
+            }
+        }
+        
+        // Exponential backoff utility for API calls
+        async function retryFetch(url, options, maxRetries = 5) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status !== 429) { // Not a rate limit error
+                        return response;
+                    }
+                } catch (error) {
+                    // General network or fetch error, proceed to wait/retry
+                }
+                
+                // Exponential backoff
+                const delay = Math.pow(2, attempt) * 1000;
+                if (attempt < maxRetries - 1) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw new Error("Failed to fetch after multiple retries.");
+                }
+            }
+        }
+
+
+        async function processImage() {
+            const imageInput = document.getElementById('imageInput');
+            const outputText = document.getElementById('outputText');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const copyBtn = document.getElementById('copyExtractedTextButton');
+            
+            outputText.value = '';
+            copyBtn.classList.add('hidden');
+            
+            const file = imageInput.files[0];
+            if (!file) {
+                outputText.value = 'Please select an image file first.';
+                return;
+            }
+            
+            loadingIndicator.classList.remove('hidden');
+
+            try {
+                const base64Data = await base64EncodeImage(file);
+                const mimeType = file.type;
+
+                const userPrompt = "Identify all readable text from this image and output it as raw, continuous text. Do not add any commentary, explanations, or formatting.";
+                const apiKey = "" 
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: userPrompt },
+                                {
+                                    inlineData: {
+                                        mimeType: mimeType,
+                                        data: base64Data
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                };
+
+                const response = await retryFetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                const extractedText = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: Could not extract text. Please try another image.';
+                
+                outputText.value = extractedText;
+                if (extractedText.startsWith('Error:')) {
+                    copyBtn.classList.add('hidden');
+                } else {
+                    copyBtn.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Image processing failed:', error);
+                outputText.value = `An error occurred during text extraction: ${error.message}`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        
+        function copyExtractedText() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+            const copyBtn = document.getElementById('copyExtractedTextButton');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => copyBtn.textContent = 'Copy Extracted Text', 1500);
+            gtag('event', 'copy_extracted_text_action');
         }
     </script>
 </body>
