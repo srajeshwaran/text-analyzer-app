@@ -74,29 +74,30 @@
         }
     </style>
 
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L5GCK0R4Y7"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-L5GCK0R4Y7');
-</script>
+    <!-- ✅ Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQ55MVC80X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KQ55MVC80X');
+      function trackConversion(action, label) {
+          gtag('event', action, {
+              'event_category': 'Case Conversion',
+              'event_label': label
+          });
+      }
+    </script>
 </head>
 
 <body class="p-4 md:p-8 flex items-start justify-center min-h-screen">
 
     <div class="w-full max-w-4xl bg-white p-6 md:p-10 rounded-xl container-card">
         
-        <!-- ✅ Navigation Tabs -->
+        <!-- ✅ Navigation Tabs (Only Text Converter remains here) -->
         <div class="flex flex-wrap overflow-x-auto border-b border-gray-200 mb-6 -mt-6 -mx-6 md:-mx-10 px-6 md:px-10 pt-6 bg-gray-50 rounded-t-xl">
             <button id="tab-converterView" class="tab-button active" onclick="switchView('converterView')">Text Converter</button>
-            <button id="tab-aboutView" class="tab-button" onclick="switchView('aboutView')">About</button>
-            <button id="tab-contactView" class="tab-button" onclick="switchView('contactView')">Contact</button>
-            <!-- ✅ NEW: Policy and Terms Tabs -->
-            <button id="tab-policyView" class="tab-button" onclick="switchView('policyView')">Privacy Policy</button>
-            <button id="tab-termsView" class="tab-button" onclick="switchView('termsView')">Terms of Use</button>
+            <!-- All other links moved to the footer -->
         </div>
 
         <!-- ✅ Converter View -->
@@ -150,7 +151,7 @@
             </div>
         </div>
         
-        <!-- ✅ NEW: Privacy Policy View -->
+        <!-- ✅ Privacy Policy View -->
         <div id="policyView" class="hidden py-6">
             <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Privacy Policy</h2>
             <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">1. Data Handling</h3>
@@ -159,7 +160,7 @@
             <p class="text-gray-600 mb-4">We use Google Analytics (GA4) to understand how the tool is used, which includes tracking button clicks and view changes (like navigating to the 'About' page). This data is aggregated and anonymous and **does not** include any of the text you paste or type into the converter.</p>
         </div>
 
-        <!-- ✅ NEW: Terms of Use View -->
+        <!-- ✅ Terms of Use View -->
         <div id="termsView" class="hidden py-6">
             <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Terms of Use</h2>
             <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">1. Acceptance of Terms</h3>
@@ -170,13 +171,24 @@
             <p class="text-gray-600">The content you process remains your intellectual property. The code and design of the Text Analyzer itself are protected by copyright.</p>
         </div>
 
+        <!-- ✅ Footer with Nav Links -->
+        <footer class="mt-8 pt-4 border-t border-gray-200 text-center text-sm text-gray-500">
+            <div class="flex justify-center flex-wrap gap-x-6 gap-y-2">
+                <button class="hover:text-gray-800 transition-colors" onclick="switchView('aboutView')">About</button>
+                <button class="hover:text-gray-800 transition-colors" onclick="switchView('contactView')">Contact</button>
+                <button class="hover:text-gray-800 transition-colors" onclick="switchView('policyView')">Privacy Policy</button>
+                <button class="hover:text-gray-800 transition-colors" onclick="switchView('termsView')">Terms of Use</button>
+            </div>
+            <p class="mt-4 text-xs text-gray-400">&copy; 2025 Text Case Converter & Analyzer. All rights reserved.</p>
+        </footer>
+
     </div>
 
     <script>
         const inputElement = document.getElementById('textInput');
         const countsGrid = document.getElementById('countsGrid');
         const copyButton = document.getElementById('copyButton');
-        // Updated the views array to include the new policy and terms sections
+        // Views array includes all sections for tab switching
         const views = ['converterView', 'aboutView', 'contactView', 'policyView', 'termsView'];
 
         function switchView(viewId) {
@@ -185,7 +197,10 @@
                 const viewElement = document.getElementById(id);
                 const tabElement = document.getElementById(`tab-${id}`);
                 
+                // Toggle visibility of the content view
                 if (viewElement) viewElement.classList.toggle('hidden', id !== viewId);
+                
+                // Only "Text Converter" is a visible tab, so we only manage its 'active' state
                 if (tabElement) tabElement.classList.toggle('active', id === viewId);
             });
             gtag('event', 'page_view', { 'page_title': viewId });
@@ -250,4 +265,3 @@
     </script>
 </body>
 </html>
-
