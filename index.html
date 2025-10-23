@@ -11,9 +11,6 @@
     <meta name="author" content="Rajeshwaran">
     <meta name="robots" content="index, follow">
 
-    <!-- ✅ Canonical URL -->
-    <link rel="canonical" href="https://srajeshwaran.github.io/text-analyzer-app/">
-
     <!-- ✅ Open Graph (for better social media sharing) -->
     <meta property="og:title" content="Free Online Text Analyzer Tool">
     <meta property="og:description" content="Count words, characters, and change text case online instantly.">
@@ -67,7 +64,7 @@
             transition: background-color 0.2s;
             color: #4b5563;
             border-bottom: 3px solid transparent;
-            white-space: nowrap;
+            white-space: nowrap; /* Prevent wrapping on smaller screens */
         }
         .tab-button:hover { background-color: #eef2ff; }
         .tab-button.active {
@@ -101,6 +98,7 @@
         <div class="flex flex-wrap overflow-x-auto border-b border-gray-200 mb-6 -mt-6 -mx-6 md:-mx-10 px-6 md:px-10 pt-6 bg-gray-50 rounded-t-xl">
             <button id="tab-converterView" class="tab-button active" onclick="switchView('converterView')">Text Converter</button>
             <button id="tab-imageToTextView" class="tab-button" onclick="switchView('imageToTextView')">Image to Text Converter</button>
+            <!-- All other links moved to the footer -->
         </div>
 
         <!-- ✅ Converter View -->
@@ -110,29 +108,23 @@
                 <p class="text-gray-500 mt-2">Instantly change case, count words, characters, and sentences.</p>
             </header>
 
-            <textarea id="textInput" class="w-full h-48 p-4 text-gray-700 border-2 border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 resize-none" placeholder="Paste or type your text here..." oninput="updateCounts()" spellcheck="false" aria-label="Text input area"></textarea>
-            <p class="text-sm text-gray-500 mt-2">Paste your text above and choose a case to convert. Counts update automatically.</p>
+            <textarea id="textInput" class="w-full h-48 p-4 text-gray-700 border-2 border-indigo-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 resize-none" placeholder="Paste or type your text here..." oninput="updateCounts()" spellcheck="false"></textarea>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
-                <button onclick="changeCase('upper')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Convert text to uppercase">UPPER CASE</button>
-                <button onclick="changeCase('lower')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Convert text to lowercase">lower case</button>
-                <button onclick="changeCase('title')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Convert text to title case">Title Case</button>
-                <button onclick="changeCase('sentence')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Convert text to sentence case">Sentence case</button>
+                <button onclick="changeCase('upper')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">UPPER CASE</button>
+                <button onclick="changeCase('lower')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">lower case</button>
+                <button onclick="changeCase('title')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Title Case</button>
+                <button onclick="changeCase('sentence')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm">Sentence case</button>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                <button onclick="changeCase('inverse')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-purple-500 hover:bg-purple-600" aria-label="Convert text to inverse case">InVeRsE cAsE</button>
-                <button onclick="changeCase('kebab')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-pink-500 hover:bg-pink-600" aria-label="Convert text to kebab case">kebab-case</button>
+                <button onclick="changeCase('inverse')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-purple-500 hover:bg-purple-600">InVeRsE cAsE</button>
+                <button onclick="changeCase('kebab')" class="btn text-white py-2 px-4 rounded-lg font-semibold text-sm bg-pink-500 hover:bg-pink-600">kebab-case</button>
             </div>
 
             <div class="flex justify-between items-center mb-8 border-t pt-4">
-                <button id="copyButton" onclick="copyText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Copy text">Copy Text</button>
-                <button onclick="clearText()" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg font-semibold text-sm" aria-label="Clear all text">Clear All</button>
-            </div>
-
-            <!-- ✅ AdSense Placeholder -->
-            <div class="my-6 text-center">
-                <p class="text-gray-400">Ad Space (Google AdSense will appear here)</p>
+                <button id="copyButton" onclick="copyText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-sm">Copy Text</button>
+                <button onclick="clearText()" class="btn bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg font-semibold text-sm">Clear All</button>
             </div>
 
             <h2 class="text-xl font-bold text-gray-700 mb-4">Analysis & Counts</h2>
@@ -155,9 +147,50 @@
                 <p id="loadingIndicator" class="hidden text-center text-indigo-600 font-semibold py-4">
                     Processing image, please wait...
                 </p>
-                <textarea id="outputText" class="w-full h-48 p-4 text-gray-700 border-2 border-gray-200 rounded-lg resize-none" placeholder="Extracted text will appear here..." readonly aria-label="Extracted text output"></textarea>
-                <button id="copyExtractedTextButton" onclick="copyExtractedText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-sm mt-3 hidden" aria-label="Copy extracted text">Copy Extracted Text</button>
+                <textarea id="outputText" class="w-full h-48 p-4 text-gray-700 border-2 border-gray-200 rounded-lg resize-none" placeholder="Extracted text will appear here..." readonly></textarea>
+                <button id="copyExtractedTextButton" onclick="copyExtractedText()" class="btn bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-semibold text-sm mt-3 hidden">Copy Extracted Text</button>
             </div>
+        </div>
+
+        <!-- ✅ About -->
+        <div id="aboutView" class="hidden py-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">About This Tool</h2>
+            <p class="text-gray-600 mb-4">The Text Case Converter & Analyzer is designed to be a quick, efficient, and privacy-friendly utility for anyone working with text.</p>
+            <ul class="list-disc list-inside text-gray-600 ml-4 space-y-2">
+                <li>Convert text between multiple cases instantly.</li>
+                <li>Count words, characters, sentences, and paragraphs in real time.</li>
+                <li>All processing happens locally — nothing is stored or uploaded.</li>
+            </ul>
+        </div>
+
+        <!-- ✅ Contact -->
+        <div id="contactView" class="hidden py-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Get in Touch</h2>
+            <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-400">
+                <h3 class="text-xl font-semibold text-gray-700 mb-3">Suggestions or Bugs?</h3>
+                <p class="text-gray-600 mb-4">You can reach the developer at:</p>
+                <p class="text-gray-800 font-medium">developer.contact@example.com</p>
+            </div>
+        </div>
+        
+        <!-- ✅ Privacy Policy View -->
+        <div id="policyView" class="hidden py-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Privacy Policy</h2>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">1. Data Handling</h3>
+            <p class="text-gray-600 mb-4">This tool is designed for maximum privacy. **All text processing, analysis, and case conversions are performed locally within your browser.** No text input, conversions, or analysis results are ever transmitted to our servers or stored in any database. Your data stays on your device.</p>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">2. Logging and Analytics</h3>
+            <p class="text-gray-600 mb-4">We use Google Analytics (GA4) to understand how the tool is used, which includes tracking button clicks and view changes (like navigating to the 'About' page). This data is aggregated and anonymous and **does not** include any of the text you paste or type into the converter.</p>
+        </div>
+
+        <!-- ✅ Terms of Use View -->
+        <div id="termsView" class="hidden py-6">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2">Terms of Use</h2>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">1. Acceptance of Terms</h3>
+            <p class="text-gray-600 mb-4">By accessing and using the Text Analyzer, you agree to be bound by these Terms of Use. If you do not agree, please do not use this tool.</p>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">2. Limitations of Liability</h3>
+            <p class="text-gray-600 mb-4">The tool is provided "as is" without warranty of any kind. We are not responsible for any damage or loss resulting from the use or inability to use the information provided by the Text Analyzer.</p>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2 mt-4">3. Intellectual Property</h3>
+            <p class="text-gray-600">The content you process remains your intellectual property. The code and design of the Text Analyzer itself are protected by copyright.</p>
         </div>
 
         <!-- ✅ Footer with Nav Links -->
@@ -170,11 +203,237 @@
             </div>
             <p class="mt-4 text-xs text-gray-400">&copy; 2025 Text Case Converter & Analyzer. All rights reserved.</p>
         </footer>
+
     </div>
 
     <script>
-        // Your existing JS code here (no changes to functionality)
-        // ...
+        const inputElement = document.getElementById('textInput');
+        const countsGrid = document.getElementById('countsGrid');
+        const copyButton = document.getElementById('copyButton');
+        // Views array includes all sections for tab switching
+        const views = ['converterView', 'imageToTextView', 'aboutView', 'contactView', 'policyView', 'termsView'];
+
+        function switchView(viewId) {
+            views.forEach(id => {
+                // Ensure tabs are in view before toggling classes
+                const viewElement = document.getElementById(id);
+                const tabElement = document.getElementById(`tab-${id}`);
+                
+                // Toggle visibility of the content view
+                if (viewElement) viewElement.classList.toggle('hidden', id !== viewId);
+                
+                // Only "Text Converter" and "ImageToTextView" have tabs, we manage their 'active' state
+                if (tabElement) {
+                    tabElement.classList.toggle('active', id === viewId);
+                } else if (id === 'converterView' || id === 'imageToTextView') {
+                    // This handles non-tab views (like About/Contact) by ensuring all tabs are inactive
+                    const converterTab = document.getElementById('tab-converterView');
+                    const imageToTextTab = document.getElementById('tab-imageToTextView');
+                    if (converterTab) converterTab.classList.remove('active');
+                    if (imageToTextTab) imageToTextTab.classList.remove('active');
+                }
+
+                // Re-activate the correct tab if it exists
+                const newActiveTab = document.getElementById(`tab-${viewId}`);
+                if (newActiveTab) {
+                    newActiveTab.classList.add('active');
+                }
+            });
+            gtag('event', 'page_view', { 'page_title': viewId });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchView('converterView');
+            updateCounts();
+        });
+
+        function updateCounts() {
+            const text = inputElement.value;
+            const chars = text.length;
+            // Counts words by splitting on word boundaries (non-whitespace, non-punctuation)
+            const words = (text.match(/\b\w+\b/g) || []).length;
+            // Counts sentences by splitting on terminal punctuation followed by potential whitespace
+            const sentences = (text.split(/[.!?]+/).filter(s => s.trim().length)).length;
+            // Counts paragraphs by splitting on two or more newline characters
+            const paragraphs = (text.split(/\n\s*\n/).filter(p => p.trim().length)).length;
+
+            countsGrid.innerHTML = `
+                <div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400"><p class="text-3xl font-bold text-indigo-700">${chars}</p><p class="text-gray-600">Characters</p></div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400"><p class="text-3xl font-bold text-indigo-700">${words}</p><p class="text-gray-600">Words</p></div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400"><p class="text-3xl font-bold text-indigo-700">${sentences}</p><p class="text-gray-600">Sentences</p></div>
+                <div class="bg-indigo-50 p-4 rounded-lg text-center border-b-4 border-indigo-400"><p class="text-3xl font-bold text-indigo-700">${paragraphs}</p><p class="text-gray-600">Paragraphs</p></div>
+            `;
+        }
+
+        function changeCase(type) {
+            let t = inputElement.value;
+            if (!t) return;
+            if (type === 'upper') t = t.toUpperCase();
+            else if (type === 'lower') t = t.toLowerCase();
+            // Title Case: Capitalize the first letter of every word
+            else if (type === 'title') t = t.replace(/\w\S*/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+            // Sentence Case: Lowercase everything, then capitalize the first letter of the first word and any word immediately following terminal punctuation
+            else if (type === 'sentence') t = t.toLowerCase().replace(/(^\s*\w|[.?!]\s*\w)/g, c => c.toUpperCase());
+            // Inverse Case: Alternating upper/lower case
+            else if (type === 'inverse') t = [...t].map((c, i) => i % 2 ? c.toLowerCase() : c.toUpperCase()).join('');
+            // Kebab Case: Lowercase, remove non-alphanumeric/non-whitespace characters, and replace whitespace with hyphens
+            else if (type === 'kebab') t = t.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+            
+            inputElement.value = t;
+            updateCounts();
+            trackConversion('case_conversion', type);
+        }
+
+        function copyText() {
+            // Using document.execCommand('copy') for better compatibility in sandboxed environments
+            inputElement.select();
+            document.execCommand('copy');
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => copyButton.textContent = 'Copy Text', 1500);
+            gtag('event', 'copy_action');
+        }
+
+        function clearText() {
+            inputElement.value = '';
+            updateCounts();
+            gtag('event', 'clear_action');
+        }
+
+        // --- Image to Text Conversion Functions ---
+
+        // Utility for base64 encoding
+        function base64EncodeImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    // Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+                    const base64String = reader.result.split(',')[1];
+                    resolve(base64String);
+                };
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const preview = document.getElementById('imagePreview');
+            document.getElementById('outputText').value = '';
+            document.getElementById('copyExtractedTextButton').classList.add('hidden');
+            
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                previewContainer.classList.remove('hidden');
+            } else {
+                previewContainer.classList.add('hidden');
+                preview.src = '';
+            }
+        }
+        
+        // Exponential backoff utility for API calls
+        async function retryFetch(url, options, maxRetries = 5) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status !== 429) { // Not a rate limit error
+                        return response;
+                    }
+                } catch (error) {
+                    // General network or fetch error, proceed to wait/retry
+                }
+                
+                // Exponential backoff
+                const delay = Math.pow(2, attempt) * 1000;
+                if (attempt < maxRetries - 1) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                } else {
+                    throw new Error("Failed to fetch after multiple retries.");
+                }
+            }
+        }
+
+
+        async function processImage() {
+            const imageInput = document.getElementById('imageInput');
+            const outputText = document.getElementById('outputText');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const copyBtn = document.getElementById('copyExtractedTextButton');
+            
+            outputText.value = '';
+            copyBtn.classList.add('hidden');
+            
+            const file = imageInput.files[0];
+            if (!file) {
+                outputText.value = 'Please select an image file first.';
+                return;
+            }
+            
+            loadingIndicator.classList.remove('hidden');
+
+            try {
+                const base64Data = await base64EncodeImage(file);
+                const mimeType = file.type;
+
+                const userPrompt = "Identify all readable text from this image and output it as raw, continuous text. Do not add any commentary, explanations, or formatting.";
+                const apiKey = "AIzaSyDndkN_cnq8th9rmrwJmynk1J4Em6uEeUQ" // IMPORTANT: When deploying this code publicly, you MUST replace "" with your actual Gemini API key.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: userPrompt },
+                                {
+                                    inlineData: {
+                                        mimeType: mimeType,
+                                        data: base64Data
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                };
+
+                const response = await retryFetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                
+                // Enhanced error message to help the user identify the API key issue on their published site
+                const extractedText = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Extraction failed. This may be due to poor image quality or a missing/invalid API key (if deployed on a public site). Please try another image or check your browser console for details.';
+                
+                outputText.value = extractedText;
+                if (extractedText.includes('API key (if deployed')) {
+                    copyBtn.classList.add('hidden');
+                } else if (extractedText.startsWith('Error:')) {
+                    copyBtn.classList.add('hidden');
+                } else {
+                    copyBtn.classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error('Image processing failed:', error);
+                // Enhanced message for network/fetch failures
+                outputText.value = `A network error occurred. If you are using this on a published website, ensure your Gemini API key has been added to the 'const apiKey' variable in the code. Detailed error: ${error.message}`;
+            } finally {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+        
+        function copyExtractedText() {
+            const outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy');
+            const copyBtn = document.getElementById('copyExtractedTextButton');
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => copyBtn.textContent = 'Copy Extracted Text', 1500);
+            gtag('event', 'copy_extracted_text_action');
+        }
     </script>
 </body>
 </html>
